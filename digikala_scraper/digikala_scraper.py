@@ -2,18 +2,18 @@ import requests
 import pandas as pd
 import time
 
-# تنظیمات
+
 base_url = "https://api.digikala.com/v1/categories/mobile-phone/search/?page="
 max_pages = 5
 products = []
 
-# هدر برای درخواست واقعی‌تر
+
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
     "Accept": "application/json"
 }
 
-# دریافت داده از چند صفحه
+
 for page in range(1, max_pages + 1):
     print(f"⏳ Fetching page {page}...")
     url = base_url + str(page)
@@ -40,13 +40,13 @@ for page in range(1, max_pages + 1):
         print(f"❌ Error on page {page}: {e}")
         continue
 
-# ساخت دیتافریم
+
 df = pd.DataFrame(products, columns=['Product Title', 'Price (IRR)', 'Rating', 'Seller'])
 
-# ذخیره به CSV
+
 df.to_csv('digikala_products.csv', index=False, encoding='utf-8')
 
-# ذخیره به HTML
+
 html_output = df.to_html(index=False, border=0, justify="center", classes="table table-striped")
 with open('digikala_products.html', 'w', encoding='utf-8') as f:
     f.write("""
